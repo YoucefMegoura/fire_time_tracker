@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1048581019852",
+    "project_id": "jitek-1582294345034",
+    "storage_bucket": "jitek-1582294345034.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1048581019852:android:7188bbbe1ba58849b48a69",
+        "android_client_info": {
+          "package_name": "ga.youcefmegoura.time_tracker_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1048581019852-ecs42t1ftf4tsn059d8ijba5547euq6j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApG2PTe0uK3o2tU1UkpRlBh7gBWws3IdQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1048581019852-ecs42t1ftf4tsn059d8ijba5547euq6j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
