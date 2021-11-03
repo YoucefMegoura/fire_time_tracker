@@ -1,11 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:time_tracker_flutter/app/common_widgets/custom_raised_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:time_tracker_flutter/app/sign_in/sign_in_button.dart';
 import 'package:time_tracker_flutter/app/sign_in/sign_in_social_button.dart';
 
 class SignInPage extends StatelessWidget {
-  const SignInPage({Key? key}) : super(key: key);
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  SignInPage();
+
+  void _anonymousAuth() async {
+    try {
+      UserCredential userCredential = await _auth.signInAnonymously();
+      print(userCredential.user!.displayName);
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,9 +72,7 @@ class SignInPage extends StatelessWidget {
                 text: 'Go anonymous',
                 backgroundColor: const Color(0xFFD7E26C),
                 textColor: Colors.black,
-                onPressed: () {
-                  //
-                },
+                onPressed: () => _anonymousAuth(),
               ),
             ],
           ),
