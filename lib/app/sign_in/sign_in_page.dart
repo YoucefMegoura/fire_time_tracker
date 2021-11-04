@@ -7,12 +7,14 @@ import 'package:time_tracker_flutter/app/sign_in/sign_in_social_button.dart';
 class SignInPage extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  SignInPage();
+  final Function(User) onSignIn;
+
+  SignInPage({required this.onSignIn});
 
   void _anonymousAuth() async {
     try {
       UserCredential userCredential = await _auth.signInAnonymously();
-      print(userCredential.user!.displayName);
+      onSignIn(userCredential.user!);
     } catch (e) {
       print(e);
     }

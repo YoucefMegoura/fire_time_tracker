@@ -25,7 +25,7 @@ class CustomRaisedButton extends StatelessWidget {
           ),
         ),
         child: child,
-        onPressed: () => onPressed,
+        onPressed: () => onPressed(),
       ),
     );
   }
