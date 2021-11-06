@@ -5,6 +5,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:time_tracker_flutter/app/models/user.dart';
 
 abstract class AuthService {
+  static const String GOOGLE_PROVIDER_NAME = 'google';
+  static const String FACEBOOK_PROVIDER_NAME = 'facebook';
+
   Future<MyUser?> signInAnonymously();
   Future<void> signOut();
   MyUser? getCurrentUser();
@@ -39,12 +42,15 @@ class AuthServiceImpl extends AuthService {
     try {
       final _providerData = _auth.currentUser!.providerData;
       if (_providerData.isNotEmpty) {
-        if (_providerData[0].providerId.toLowerCase().contains('google')) {
+        if (_providerData[0]
+            .providerId
+            .toLowerCase()
+            .contains(AuthService.GOOGLE_PROVIDER_NAME)) {
           await GoogleSignIn().signOut();
         } else if (_providerData[0]
             .providerId
             .toLowerCase()
-            .contains('facebook')) {
+            .contains(AuthService.FACEBOOK_PROVIDER_NAME)) {
           await FacebookAuth.instance.login();
         }
       }
