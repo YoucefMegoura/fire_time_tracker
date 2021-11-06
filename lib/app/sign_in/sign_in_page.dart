@@ -25,6 +25,14 @@ class SignInPage extends StatelessWidget {
     }
   }
 
+  void _facebookAuth() async {
+    try {
+      await auth.signInWithFacebook();
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +54,7 @@ class SignInPage extends StatelessWidget {
               SignInSocialButton(
                 image: 'images/google-logo.png',
                 text: 'Sign In with Google',
-                onPressed: () => _googleAuth(),
+                onPressed: _googleAuth,
               ),
               SizedBox(height: 10.0),
               SignInSocialButton(
@@ -54,9 +62,7 @@ class SignInPage extends StatelessWidget {
                 text: 'Sign In with Facebook',
                 backgroundColor: const Color(0xFF344B93),
                 textColor: Colors.white,
-                onPressed: () {
-                  //
-                },
+                onPressed: _facebookAuth,
               ),
               SizedBox(height: 10.0),
               SignInButton(
@@ -77,7 +83,7 @@ class SignInPage extends StatelessWidget {
                 text: 'Go anonymous',
                 backgroundColor: const Color(0xFFD7E26C),
                 textColor: Colors.black,
-                onPressed: () => _anonymousAuth(),
+                onPressed: _anonymousAuth,
               ),
             ],
           ),
