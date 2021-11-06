@@ -5,6 +5,7 @@ abstract class AuthService {
   Future<MyUser?> signInAnonymously();
   Future<void> signOut();
   MyUser? getCurrentUser();
+  Stream<MyUser?> get onChangeUser;
 }
 
 class AuthServiceImpl extends AuthService {
@@ -37,5 +38,10 @@ class AuthServiceImpl extends AuthService {
       return null;
     }
     return MyUser(uid: user.uid);
+  }
+
+  @override
+  Stream<MyUser?> get onChangeUser {
+    return _auth.authStateChanges().map(_userFromFirebase);
   }
 }

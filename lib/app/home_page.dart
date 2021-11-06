@@ -2,18 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:time_tracker_flutter/app/services/auth_service.dart';
 
 class HomePage extends StatelessWidget {
-  final Function onSignOut;
-
-  final AuthServiceImpl _auth = AuthServiceImpl();
+  final AuthServiceImpl auth;
 
   HomePage({
-    required this.onSignOut,
+    required this.auth,
   });
 
   _signOutUser() async {
     try {
-      await _auth.signOut();
-      onSignOut();
+      await auth.signOut();
     } catch (e) {
       print(e);
     }
