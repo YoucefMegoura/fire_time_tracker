@@ -37,12 +37,12 @@ class AuthServiceImpl extends AuthService {
   @override
   Future<void> signOut() async {
     try {
-      if (_auth.currentUser!.providerData.isNotEmpty) {
-        if (_auth.currentUser!.providerData[0].providerId
-            .toLowerCase()
-            .contains('google')) {
+      final _providerData = _auth.currentUser!.providerData;
+      if (_providerData.isNotEmpty) {
+        if (_providerData[0].providerId.toLowerCase().contains('google')) {
           await GoogleSignIn().signOut();
-        } else if (_auth.currentUser!.providerData[0].providerId
+        } else if (_providerData[0]
+            .providerId
             .toLowerCase()
             .contains('facebook')) {
           await FacebookAuth.instance.login();
