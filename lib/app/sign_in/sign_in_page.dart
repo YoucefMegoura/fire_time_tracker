@@ -17,6 +17,14 @@ class SignInPage extends StatelessWidget {
     await auth.signInAnonymously();
   }
 
+  void _googleAuth() async {
+    try {
+      await auth.signInWithGoogle();
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,9 +46,7 @@ class SignInPage extends StatelessWidget {
               SignInSocialButton(
                 image: 'images/google-logo.png',
                 text: 'Sign In with Google',
-                onPressed: () {
-                  //
-                },
+                onPressed: () => _googleAuth(),
               ),
               SizedBox(height: 10.0),
               SignInSocialButton(
