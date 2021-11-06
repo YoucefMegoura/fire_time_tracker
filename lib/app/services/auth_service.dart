@@ -14,6 +14,7 @@ abstract class AuthService {
   Stream<MyUser?> get onChangeUser;
   Future<MyUser?> signInWithGoogle();
   Future<MyUser?> signInWithFacebook();
+  Future<MyUser?> signInWithEmailPassword(String email, String password);
 }
 
 class AuthServiceImpl extends AuthService {
@@ -125,5 +126,14 @@ class AuthServiceImpl extends AuthService {
     } on FirebaseAuthException catch (e) {
       throw PlatformException(code: e.code, message: e.message);
     }
+  }
+
+  @override
+  Future<MyUser?> signInWithEmailPassword(String email, String password) async {
+    final _userCredential = await _auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    return _userFromFirebase(_userCredential.user);
   }
 }
