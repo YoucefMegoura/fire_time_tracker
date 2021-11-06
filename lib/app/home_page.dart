@@ -1,10 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:time_tracker_flutter/app/services/auth_service.dart';
 
 class HomePage extends StatelessWidget {
   final Function onSignOut;
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final AuthServiceImpl _auth = AuthServiceImpl();
 
   HomePage({
     required this.onSignOut,

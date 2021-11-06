@@ -1,6 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:time_tracker_flutter/app/home_page.dart';
+import 'package:time_tracker_flutter/app/models/user.dart';
+import 'package:time_tracker_flutter/app/services/auth_service.dart';
 import 'package:time_tracker_flutter/app/sign_in/sign_in_page.dart';
 
 class LandingPage extends StatefulWidget {
@@ -9,22 +10,19 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  User? _user;
-
-  void _updateUser(User? user) {
+  MyUser? _user;
+  final AuthServiceImpl _auth = AuthServiceImpl();
+  void _updateUser(MyUser? user) {
     setState(() {
       _user = user;
     });
   }
 
-  void _isUserLoggedIn() {}
-
   @override
   void initState() {
     super.initState();
-    if (_auth.currentUser != null) {
-      _updateUser(_auth.currentUser);
+    if (_auth.getCurrentUser() != null) {
+      _updateUser(_auth.getCurrentUser());
     }
   }
 
