@@ -180,7 +180,10 @@ class _SignInEmailPageState extends State<SignInEmailPage> {
   }
 
   void _onCompleteEmailEditing() {
-    FocusScope.of(context).requestFocus(_passwordFocusNode);
+    var _newFocus = widget.emailValidator.isNotEmptyValidation(_email)
+        ? _passwordFocusNode
+        : _emailFocusNode;
+    FocusScope.of(context).requestFocus(_newFocus);
   }
 
   void _onCompletePasswordEditing() {
