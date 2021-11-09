@@ -38,7 +38,7 @@ class _SignInEmailPageState extends State<SignInEmailPage> {
       appBar: AppBar(
         title: const Text('Email SignIn'),
       ),
-      body: _bodyContent(context),
+      body: SingleChildScrollView(child: _bodyContent(context)),
     );
   }
 
