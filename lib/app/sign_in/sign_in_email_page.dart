@@ -147,23 +147,21 @@ class _SignInEmailPageState extends State<SignInEmailPage> {
       _isInProgress = true;
       _isFormSubmitted = true;
     });
-    await Future.delayed(Duration(seconds: 3), () async {
-      try {
-        if (_formType == SignEmailType.signIn) {
-          await widget.auth.createUserWithEmailAndPassword(_email, _password);
-        } else {
-          await widget.auth.signInWithEmailAndPassword(_email, _password);
-        }
-
-        Navigator.pop(context);
-      } catch (e) {
-        print(e);
-      } finally {
-        setState(() {
-          _isInProgress = false;
-        });
+    try {
+      if (_formType == SignEmailType.signIn) {
+        await widget.auth.createUserWithEmailAndPassword(_email, _password);
+      } else {
+        await widget.auth.signInWithEmailAndPassword(_email, _password);
       }
-    });
+
+      Navigator.pop(context);
+    } catch (e) {
+      print(e);
+    } finally {
+      setState(() {
+        _isInProgress = false;
+      });
+    }
   }
 
   void _toggleForm() {
