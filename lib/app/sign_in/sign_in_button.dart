@@ -4,7 +4,7 @@ import 'package:time_tracker_flutter/app/common_widgets/custom_raised_button.dar
 class SignInButton extends CustomRaisedButton {
   SignInButton({
     Color? textColor,
-    required Function onPressed,
+    required Function? onPressed,
     required String text,
     Color? backgroundColor,
   }) : super(

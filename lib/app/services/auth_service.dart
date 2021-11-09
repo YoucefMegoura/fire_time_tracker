@@ -14,7 +14,8 @@ abstract class AuthService {
   Stream<MyUser?> get onChangeUser;
   Future<MyUser?> signInWithGoogle();
   Future<MyUser?> signInWithFacebook();
-  Future<MyUser?> signInWithEmailPassword(String email, String password);
+  Future<MyUser?> createUserWithEmailAndPassword(String email, String password);
+  Future<MyUser?> signInWithEmailAndPassword(String email, String password);
 }
 
 class AuthServiceImpl extends AuthService {
@@ -129,7 +130,18 @@ class AuthServiceImpl extends AuthService {
   }
 
   @override
-  Future<MyUser?> signInWithEmailPassword(String email, String password) async {
+  Future<MyUser?> createUserWithEmailAndPassword(
+      String email, String password) async {
+    final _userCredential = await _auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    return _userFromFirebase(_userCredential.user);
+  }
+
+  @override
+  Future<MyUser?> signInWithEmailAndPassword(
+      String email, String password) async {
     final _userCredential = await _auth.signInWithEmailAndPassword(
       email: email,
       password: password,

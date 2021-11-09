@@ -8,14 +8,6 @@ class HomePage extends StatelessWidget {
     required this.auth,
   });
 
-  _signOutUser() async {
-    try {
-      await auth.signOut();
-    } catch (e) {
-      print(e);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,6 +20,19 @@ class HomePage extends StatelessWidget {
           )
         ],
       ),
+      body: _bodyContent(context),
     );
+  }
+
+  _signOutUser() async {
+    try {
+      await auth.signOut();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Widget _bodyContent(BuildContext context) {
+    return Container();
   }
 }
