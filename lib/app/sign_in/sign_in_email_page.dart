@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:time_tracker_flutter/app/common_widgets/platform_alert_dialog.dart';
 import 'package:time_tracker_flutter/app/services/auth_service.dart';
 import 'package:time_tracker_flutter/app/sign_in/sign_in_button.dart';
 import 'package:time_tracker_flutter/app/sign_in/validators.dart';
@@ -155,8 +158,11 @@ class _SignInEmailPageState extends State<SignInEmailPage> {
       }
 
       Navigator.pop(context);
-    } catch (e) {
-      print(e);
+    } catch (error) {
+      PlatformAlertDialog(
+        title: 'Error',
+        content: error.toString(),
+      ).show(context);
     } finally {
       setState(() {
         _isInProgress = false;
