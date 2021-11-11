@@ -27,8 +27,6 @@ class HomePage extends StatelessWidget {
 
   _signOutUser(BuildContext context) async {
     try {
-      throw 'Youcef has an error !';
-
       await auth.signOut();
     } catch (e) {
       const dialogTitle = 'Logout Error';
