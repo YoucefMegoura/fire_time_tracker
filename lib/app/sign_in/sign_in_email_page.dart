@@ -159,9 +159,13 @@ class _SignInEmailPageState extends State<SignInEmailPage> {
 
       Navigator.pop(context);
     } catch (error) {
+      const String errorTitle = 'Authentication Error';
+      final String errorContent = error.toString();
+      const String cancelTextButton = 'Dismiss';
       PlatformAlertDialog(
-        title: 'Error',
-        content: error.toString(),
+        title: errorTitle,
+        content: errorContent,
+        cancelTextButton: cancelTextButton,
       ).show(context);
     } finally {
       setState(() {

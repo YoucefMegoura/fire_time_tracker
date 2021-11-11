@@ -7,10 +7,17 @@ import 'package:time_tracker_flutter/app/common_widgets/platform_widget.dart';
 class PlatformAlertDialog extends PlatformWidget {
   final String title;
   final String content;
+  final String? agreeTextButton;
+  final String cancelTextButton;
 
-  PlatformAlertDialog({required this.title, required this.content});
+  PlatformAlertDialog({
+    this.agreeTextButton,
+    required this.cancelTextButton,
+    required this.title,
+    required this.content,
+  });
 
-  Future<bool?> show(BuildContext context) async {
+  Future<bool> show(BuildContext context) async {
     return Platform.isIOS
         ? await showCupertinoDialog(
             context: context,
@@ -45,22 +52,35 @@ class PlatformAlertDialog extends PlatformWidget {
   }
 
   List<Widget> _buildActions(BuildContext context) {
-    return [
-      PlatformDialogAction(
+    List<Widget> tmpListActions = [];
+    tmpListActions.add(
+      PlatformAlertDialogAction(
         onPressed: () {
-          Navigator.pop(context);
+          Navigator.pop(context, false);
         },
-        child: const Text('Ok'),
-      )
-    ];
+        child: Text(cancelTextButton),
+      ),
+    );
+
+    if (agreeTextButton != null) {
+      tmpListActions.add(
+        PlatformAlertDialogAction(
+          onPressed: () {
+            Navigator.pop(context, true);
+          },
+          child: Text(agreeTextButton!),
+        ),
+      );
+    }
+    return tmpListActions;
   }
 }
 
-class PlatformDialogAction extends PlatformWidget {
+class PlatformAlertDialogAction extends PlatformWidget {
   final Function onPressed;
   final Widget child;
 
-  PlatformDialogAction({
+  PlatformAlertDialogAction({
     required this.onPressed,
     required this.child,
   });
