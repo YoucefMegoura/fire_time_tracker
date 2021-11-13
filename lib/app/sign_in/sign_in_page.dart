@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:time_tracker_flutter/app/services/auth_provider_service.dart';
+import 'package:provider/provider.dart';
 import 'package:time_tracker_flutter/app/services/auth_service.dart';
 import 'package:time_tracker_flutter/app/sign_in/sign_in_button.dart';
 import 'package:time_tracker_flutter/app/sign_in/sign_in_email_page.dart';
@@ -10,23 +10,23 @@ import '../constants.dart';
 
 class SignInPage extends StatelessWidget {
   void _anonymousAuth(BuildContext context) async {
-    final authProvider = AuthProvider.of(context);
-    await authProvider!.signInAnonymously();
+    final authProvider = context.read<AuthService>();
+    await authProvider.signInAnonymously();
   }
 
   void _googleAuth(BuildContext context) async {
-    final authProvider = AuthProvider.of(context);
+    final authProvider = context.read<AuthService>();
     try {
-      await authProvider!.signInWithGoogle();
+      await authProvider.signInWithGoogle();
     } catch (e) {
       print(e);
     }
   }
 
   void _facebookAuth(BuildContext context) async {
-    final authProvider = AuthProvider.of(context);
+    final authProvider = context.read<AuthService>();
     try {
-      await authProvider!.signInWithFacebook();
+      await authProvider.signInWithFacebook();
     } catch (e) {
       print(e);
     }
@@ -34,7 +34,7 @@ class SignInPage extends StatelessWidget {
 
   void _emailAuth(BuildContext context) async {
     try {
-      await Navigator.push<Map<String, String?>>(
+      await Navigator.push(
         context,
         MaterialPageRoute<Map<String, String?>>(
           fullscreenDialog: true,
