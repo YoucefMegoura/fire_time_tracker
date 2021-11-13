@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 
-class CustomRaisedButton extends StatelessWidget {
+class CustomElevatedButton extends StatelessWidget {
   final Color? backgroundColor;
   final Function? onPressed;
   final Widget child;
   final double? height;
   final double? borderRadius;
-  CustomRaisedButton(
+  final bool isEnable;
+
+  CustomElevatedButton(
       {this.backgroundColor = Colors.white,
       required this.child,
       required this.onPressed,
       this.height,
-      this.borderRadius});
+      this.borderRadius,
+      this.isEnable = true});
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +22,14 @@ class CustomRaisedButton extends StatelessWidget {
       height: height ?? 45,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: backgroundColor ?? Colors.white,
+          primary: backgroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 15)),
           ),
         ),
         child: child,
         onPressed: () {
-          if (onPressed == null) {
+          if (!isEnable || onPressed == null) {
             return;
           }
           onPressed!();

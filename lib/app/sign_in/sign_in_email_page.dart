@@ -27,7 +27,7 @@ class _SignInEmailPageState extends State<SignInEmailPage> {
 
   SignEmailType _formType = SignEmailType.signIn;
   bool _isFormSubmitted = false;
-  bool _isInProgress = false;
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +53,7 @@ class _SignInEmailPageState extends State<SignInEmailPage> {
     String _textString = (_formType == SignEmailType.signIn)
         ? 'Do you want to Sign Up'
         : 'Do you want to Sign In';
+
     bool _isFormValid = widget.emailValidator.isNotEmptyValidation(_email) &&
         widget.passwordValidator.isNotEmptyValidation(_password);
 
@@ -78,7 +79,8 @@ class _SignInEmailPageState extends State<SignInEmailPage> {
           backgroundColor: Colors.indigoAccent,
           textColor: Colors.white,
           text: _textButton,
-          onPressed: _isFormValid && !_isInProgress ? _submit : null,
+          onPressed: _isFormValid && !_isLoading ? _submit : null,
+          isEnable: !_isLoading || _isFormValid,
         )
       ];
     }
@@ -103,7 +105,7 @@ class _SignInEmailPageState extends State<SignInEmailPage> {
         !widget.passwordValidator.isNotEmptyValidation(_password);
 
     return TextField(
-      enabled: !_isInProgress,
+      enabled: !_isLoading,
       decoration: InputDecoration(
         labelText: 'Password',
         errorText:
@@ -124,7 +126,7 @@ class _SignInEmailPageState extends State<SignInEmailPage> {
     bool _showEmailError =
         _isFormSubmitted && !widget.emailValidator.isNotEmptyValidation(_email);
     return TextField(
-      enabled: !_isInProgress,
+      enabled: !_isLoading,
       decoration: InputDecoration(
         hintText: 'example@email.com',
         labelText: 'Email',
@@ -144,7 +146,7 @@ class _SignInEmailPageState extends State<SignInEmailPage> {
     final authProvider = context.read<AuthService>();
 
     setState(() {
-      _isInProgress = true;
+      _isLoading = true;
       _isFormSubmitted = true;
     });
     try {
@@ -165,13 +167,13 @@ class _SignInEmailPageState extends State<SignInEmailPage> {
       print(error.toString());
     } finally {
       setState(() {
-        _isInProgress = false;
+        _isLoading = false;
       });
     }
   }
 
   void _toggleForm() {
-    if (!_isInProgress) {
+    if (!_isLoading) {
       setState(() {
         _formType = _formType == SignEmailType.signIn
             ? SignEmailType.signUp
