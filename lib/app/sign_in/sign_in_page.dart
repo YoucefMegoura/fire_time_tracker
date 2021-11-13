@@ -30,7 +30,10 @@ class SignInPage extends StatelessWidget {
     try {
       await authProvider.signInWithGoogle();
     } on PlatformException catch (e) {
-      _showErrorDialog(context: context, exception: e);
+      if (e.code != 'ERROR_MISSING_GOOGLE_TOKEN') {
+        _showErrorDialog(context: context, exception: e);
+      }
+      print(e.message);
     } catch (e) {
       print(e);
     }
@@ -41,7 +44,9 @@ class SignInPage extends StatelessWidget {
     try {
       await authProvider.signInWithFacebook();
     } on PlatformException catch (e) {
-      _showErrorDialog(context: context, exception: e);
+      if (e.code != 'ERROR_MISSING_FACEBOOK_TOKEN') {
+        _showErrorDialog(context: context, exception: e);
+      }
     } catch (e) {
       print(e);
     }
@@ -57,7 +62,7 @@ class SignInPage extends StatelessWidget {
         ),
       );
     } on PlatformException catch (e) {
-      _showErrorDialog(context: context, exception: e);
+      print(e.message);
     } catch (e) {
       print(e);
     }
