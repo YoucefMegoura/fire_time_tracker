@@ -1,6 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:time_tracker_flutter/app/common_widgets/platform_exception_alert_dialog.dart';
 import 'package:time_tracker_flutter/app/services/auth_service.dart';
 import 'package:time_tracker_flutter/app/sign_in/sign_in_button.dart';
 import 'package:time_tracker_flutter/app/sign_in/sign_in_email_page.dart';
@@ -9,6 +10,16 @@ import 'package:time_tracker_flutter/app/sign_in/sign_in_social_button.dart';
 import '../constants.dart';
 
 class SignInPage extends StatelessWidget {
+  void _showErrorDialog(
+      {String title = 'Sign in Failed',
+      required PlatformException exception,
+      required BuildContext context}) {
+    PlatformExceptionAlertDialog(
+      title: title,
+      exception: exception,
+    ).show(context);
+  }
+
   void _anonymousAuth(BuildContext context) async {
     final authProvider = context.read<AuthService>();
     await authProvider.signInAnonymously();
@@ -18,6 +29,8 @@ class SignInPage extends StatelessWidget {
     final authProvider = context.read<AuthService>();
     try {
       await authProvider.signInWithGoogle();
+    } on PlatformException catch (e) {
+      _showErrorDialog(context: context, exception: e);
     } catch (e) {
       print(e);
     }
@@ -27,6 +40,8 @@ class SignInPage extends StatelessWidget {
     final authProvider = context.read<AuthService>();
     try {
       await authProvider.signInWithFacebook();
+    } on PlatformException catch (e) {
+      _showErrorDialog(context: context, exception: e);
     } catch (e) {
       print(e);
     }
@@ -41,6 +56,8 @@ class SignInPage extends StatelessWidget {
           builder: (context) => SignInEmailPage(),
         ),
       );
+    } on PlatformException catch (e) {
+      _showErrorDialog(context: context, exception: e);
     } catch (e) {
       print(e);
     }
