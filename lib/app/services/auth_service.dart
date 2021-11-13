@@ -57,6 +57,9 @@ class AuthServiceImpl extends AuthService {
         }
       }
       await _auth.signOut();
+    } on FirebaseAuthException catch (error) {
+      throw PlatformException(
+          code: error.code, message: error.message, details: error.plugin);
     } catch (e) {
       print(e);
     }
@@ -95,8 +98,13 @@ class AuthServiceImpl extends AuthService {
           message: 'Missing Google Account Token.',
         );
       }
-    } on FirebaseAuthException catch (e) {
-      throw PlatformException(code: e.code, message: e.message);
+    } on FirebaseAuthException catch (error) {
+      throw PlatformException(
+          code: error.code, message: error.message, details: error.plugin);
+    } on PlatformException catch (error) {
+      rethrow;
+    } catch (error) {
+      print(error.toString());
     }
   }
 
@@ -124,28 +132,47 @@ class AuthServiceImpl extends AuthService {
         default:
           return null;
       }
-    } on FirebaseAuthException catch (e) {
-      throw PlatformException(code: e.code, message: e.message);
+    } on FirebaseAuthException catch (error) {
+      throw PlatformException(
+          code: error.code, message: error.message, details: error.plugin);
+    } on PlatformException catch (error) {
+      rethrow;
+    } catch (error) {
+      print(error.toString());
     }
   }
 
   @override
   Future<MyUser?> createUserWithEmailAndPassword(
       String email, String password) async {
-    final _userCredential = await _auth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-    return _userFromFirebase(_userCredential.user);
+    try {
+      final _userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return _userFromFirebase(_userCredential.user);
+    } on FirebaseAuthException catch (error) {
+      throw PlatformException(
+          code: error.code, message: error.message, details: error.plugin);
+    } catch (error) {
+      print(error.toString());
+    }
   }
 
   @override
   Future<MyUser?> signInWithEmailAndPassword(
       String email, String password) async {
-    final _userCredential = await _auth.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-    return _userFromFirebase(_userCredential.user);
+    try {
+      final _userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return _userFromFirebase(_userCredential.user);
+    } on FirebaseAuthException catch (error) {
+      throw PlatformException(
+          code: error.code, message: error.message, details: error.plugin);
+    } catch (error) {
+      print(error.toString());
+    }
   }
 }

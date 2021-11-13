@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:time_tracker_flutter/app/common_widgets/platform_alert_dialog.dart';
+import 'package:time_tracker_flutter/app/common_widgets/platform_exception_alert_dialog.dart';
 import 'package:time_tracker_flutter/app/services/auth_service.dart';
 import 'package:time_tracker_flutter/app/sign_in/sign_in_button.dart';
 import 'package:time_tracker_flutter/app/sign_in/validators.dart';
@@ -154,15 +155,14 @@ class _SignInEmailPageState extends State<SignInEmailPage> {
       }
 
       Navigator.pop(context);
-    } catch (error) {
+    } on PlatformException catch (error) {
       const String errorTitle = 'Authentication Error';
-      final String errorContent = error.toString();
-      const String cancelTextButton = 'Dismiss';
-      PlatformAlertDialog(
+      PlatformExceptionAlertDialog(
         title: errorTitle,
-        content: errorContent,
-        cancelTextButton: cancelTextButton,
+        exception: error,
       ).show(context);
+    } catch (error) {
+      print(error.toString());
     } finally {
       setState(() {
         _isInProgress = false;
