@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:time_tracker_flutter/app/common_widgets/platform_alert_dialog.dart';
+import 'package:time_tracker_flutter/app/services/auth_provider_service.dart';
 import 'package:time_tracker_flutter/app/services/auth_service.dart';
 import 'package:time_tracker_flutter/app/sign_in/sign_in_button.dart';
 import 'package:time_tracker_flutter/app/sign_in/validators.dart';
@@ -13,10 +14,6 @@ import '../constants.dart';
 enum SignEmailType { signIn, signUp }
 
 class SignInEmailPage extends StatefulWidget with EmailAndPasswordValidator {
-  AuthService auth;
-
-  SignInEmailPage(this.auth);
-
   @override
   _SignInEmailPageState createState() => _SignInEmailPageState();
 }
@@ -146,15 +143,17 @@ class _SignInEmailPageState extends State<SignInEmailPage> {
   }
 
   void _submit() async {
+    final authProvider = AuthProvider.of(context);
+
     setState(() {
       _isInProgress = true;
       _isFormSubmitted = true;
     });
     try {
       if (_formType == SignEmailType.signIn) {
-        await widget.auth.createUserWithEmailAndPassword(_email, _password);
+        await authProvider!.createUserWithEmailAndPassword(_email, _password);
       } else {
-        await widget.auth.signInWithEmailAndPassword(_email, _password);
+        await authProvider!.signInWithEmailAndPassword(_email, _password);
       }
 
       Navigator.pop(context);

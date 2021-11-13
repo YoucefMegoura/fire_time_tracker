@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:time_tracker_flutter/app/common_widgets/platform_alert_dialog.dart';
+import 'package:time_tracker_flutter/app/services/auth_provider_service.dart';
 import 'package:time_tracker_flutter/app/services/auth_service.dart';
 
 class HomePage extends StatelessWidget {
-  final AuthServiceImpl auth;
-
-  HomePage({
-    required this.auth,
-  });
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,8 +21,9 @@ class HomePage extends StatelessWidget {
   }
 
   _signOutUser(BuildContext context) async {
+    final authProvider = AuthProvider.of(context);
     try {
-      await auth.signOut();
+      await authProvider!.signOut();
     } catch (e) {
       const dialogTitle = 'Logout Error';
       final dialogContent = 'Cause ${e.toString()} Can you please try later ?';
