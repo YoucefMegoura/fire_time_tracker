@@ -28,6 +28,10 @@ class _SignInPageState extends State<SignInPage> {
         setState(() => _isLoading = false);
       }
       print(e);
+    } finally {
+      if (authMethod == _emailAuth) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
