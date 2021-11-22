@@ -18,7 +18,7 @@ abstract class AuthService {
   Future<MyUser?> signInWithEmailAndPassword(String email, String password);
 }
 
-class AuthServiceImpl extends AuthService {
+class FirebaseAuthService extends AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   MyUser? _userFromFirebase(User? user) {

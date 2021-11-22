@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider<AuthService>(
-      create: (context) => AuthServiceImpl(),
+      create: (context) => FirebaseAuthService(),
       child: MaterialApp(
         title: 'Time Ticker',
         theme: ThemeData(primaryColor: Colors.indigoAccent),

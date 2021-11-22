@@ -22,13 +22,12 @@ class _SignInPageState extends State<SignInPage> {
       setState(() => _isLoading = true);
       await authMethod(context);
     } on PlatformException catch (e) {
-      if (e.code != 'ERROR_MISSING_GOOGLE_TOKEN' ||
+      if (e.code != 'ERROR_MISSING_GOOGLE_TOKEN' &&
           e.code != 'ERROR_MISSING_FACEBOOK_TOKEN') {
         _showErrorDialog(context: context, exception: e);
+        setState(() => _isLoading = false);
       }
       print(e);
-    } finally {
-      setState(() => _isLoading = false);
     }
   }
 
