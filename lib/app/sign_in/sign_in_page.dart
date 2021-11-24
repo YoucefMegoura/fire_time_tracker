@@ -63,7 +63,7 @@ class _SignInPageState extends State<SignInPage> {
   void _emailAuth(BuildContext context) async {
     await Navigator.push(
       context,
-      MaterialPageRoute<Map<String, String?>>(
+      MaterialPageRoute(
         fullscreenDialog: true,
         builder: (context) => SignInEmailPage(),
       ),

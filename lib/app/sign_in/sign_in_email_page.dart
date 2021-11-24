@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:time_tracker_flutter/app/common_widgets/platform_exception_alert_dialog.dart';
 import 'package:time_tracker_flutter/app/services/auth_service.dart';
 import 'package:time_tracker_flutter/app/sign_in/sign_in_button.dart';
-import 'package:time_tracker_flutter/app/sign_in/validators.dart';
+import 'package:time_tracker_flutter/app/validators.dart';
 
 import '../constants.dart';
 
@@ -177,7 +177,7 @@ class _SignInEmailPageState extends State<SignInEmailPage> {
   void _toggleForm() {
     if (!_isLoading) {
       setState(() {
-        _formType = _formType == SignEmailType.signIn
+        _formType = (_formType == SignEmailType.signIn)
             ? SignEmailType.signUp
             : SignEmailType.signIn;
 

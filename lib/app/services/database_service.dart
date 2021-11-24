@@ -1,9 +1,6 @@
 import 'dart:core';
-import 'dart:core';
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/services.dart';
 import 'package:time_tracker_flutter/app/models/job.dart';
 import 'package:time_tracker_flutter/app/services/api_path.dart';
 import 'package:time_tracker_flutter/app/services/firebase_service.dart';
@@ -21,7 +18,8 @@ class FirebaseDatabaseService implements DatabaseService {
   Future<void> createJob(Job job) async {
     final _service = FirebaseService.instance;
     _service.setData(
-      path: APIPath.job(uid, 'jobId ${Random().nextInt(100).toDouble()}'),
+      path: APIPath.job(uid,
+          'jobId ${Random().nextInt(100).toDouble()}'), //TODO:: transform to automatic Firebase ID
       data: job.toMap(),
     );
   }
