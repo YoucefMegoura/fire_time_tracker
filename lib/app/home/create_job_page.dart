@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:time_tracker_flutter/app/common_widgets/platform_alert_dialog.dart';
 import 'package:time_tracker_flutter/app/common_widgets/platform_exception_alert_dialog.dart';
 import 'package:time_tracker_flutter/app/models/job.dart';
 import 'package:time_tracker_flutter/app/services/database_service.dart';
@@ -138,6 +139,16 @@ class _CreateJobPageState extends State<CreateJobPage> {
       _isFormSubmitted = true;
     });
     try {
+      List<Job> _jobs = await widget.databaseService.streamJobs().first;
+      List<String> _allNames = _jobs.map((Job job) => job.name).toList();
+      if (_allNames.contains(_name)) {
+        PlatformAlertDialog(
+          title: 'Error',
+          content: 'Name Already Exists',
+          cancelTextButton: 'OK',
+        ).show(context);
+        return;
+      }
       await widget.databaseService.createJob(
         Job(name: _name, ratePerHour: _rate),
       );

@@ -18,7 +18,7 @@ class FirebaseDatabaseService implements DatabaseService {
   Future<void> createJob(Job job) async {
     final _service = FirebaseService.instance;
     _service.setData(
-      path: APIPath.job(uid), //TODO:: transform to automatic Firebase ID
+      path: APIPath.job(uid),
       data: job.toMap(),
     );
   }
