@@ -10,10 +10,10 @@ class FirebaseService {
     required Map<String, dynamic> data,
   }) async {
     try {
-      DocumentReference<Map<String, dynamic>> _document =
-          FirebaseFirestore.instance.doc(path);
+      CollectionReference<Map<String, dynamic>> _document =
+          FirebaseFirestore.instance.collection(path);
       print('$path : $data');
-      await _document.set(data);
+      await _document.add(data);
     } on FirebaseException catch (e) {
       throw PlatformException(
           code: e.code, details: e.plugin, message: e.message);

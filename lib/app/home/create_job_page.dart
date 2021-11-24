@@ -8,6 +8,8 @@ import 'package:time_tracker_flutter/app/validators.dart';
 
 import '../constants.dart';
 
+//TODO:: convert to FORM and TEXTFIELDFORM !!
+
 class CreateJobPage extends StatefulWidget with JobAndRateValidator {
   @override
   State<CreateJobPage> createState() => _CreateJobPageState();
