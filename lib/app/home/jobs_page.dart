@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker_flutter/app/common_widgets/platform_alert_dialog.dart';
 import 'package:time_tracker_flutter/app/home/create_job_page.dart';
@@ -27,6 +26,31 @@ class JobsPage extends StatelessWidget {
         child: const Icon(Icons.add),
         onPressed: () => _createJob(context),
       ),
+    );
+  }
+
+  Widget _bodyContent(BuildContext context) {
+    Stream<List<Job>> streamJobsList =
+        context.read<DatabaseService>().streamJobs();
+    return StreamBuilder(
+      builder: (BuildContext context, AsyncSnapshot<List<Job>> snapshot) {
+        if (snapshot.hasData) {
+          return ListView(
+            children: snapshot.data!
+                .map((Job job) =>
+                    Text(job.name + ' : ' + job.ratePerHour.toString()))
+                .toList(),
+          );
+        }
+        if (snapshot.hasError) {
+          print(snapshot.error);
+          return const Center(child: Text('Error : No data !'));
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+      stream: streamJobsList,
     );
   }
 
@@ -63,31 +87,6 @@ class JobsPage extends StatelessWidget {
     if (isUserWantToLogout) {
       _signOutUser(context);
     }
-  }
-
-  Widget _bodyContent(BuildContext context) {
-    Stream<List<Job>> streamJobsList =
-        context.read<DatabaseService>().streamJobs();
-    return StreamBuilder(
-      builder: (BuildContext context, AsyncSnapshot<List<Job>> snapshot) {
-        if (snapshot.hasData) {
-          return ListView(
-            children: snapshot.data!
-                .map((Job job) =>
-                    Text(job.name + ' : ' + job.ratePerHour.toString()))
-                .toList(),
-          );
-        }
-        if (snapshot.hasError) {
-          print(snapshot.error);
-          return const Center(child: Text('Error : No data !'));
-        }
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-      stream: streamJobsList,
-    );
   }
 
   Future<void> _createJob(BuildContext context) async {
