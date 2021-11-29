@@ -3,7 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker_flutter/app/common_widgets/platform_alert_dialog.dart';
-import 'package:time_tracker_flutter/app/home/create_job_page.dart';
+import 'package:time_tracker_flutter/app/home/edit_job_page.dart';
+import 'package:time_tracker_flutter/app/home/job_tile_list.dart';
 import 'package:time_tracker_flutter/app/models/job.dart';
 import 'package:time_tracker_flutter/app/services/auth_service.dart';
 import 'package:time_tracker_flutter/app/services/database_service.dart';
@@ -11,6 +12,7 @@ import 'package:time_tracker_flutter/app/services/database_service.dart';
 class JobsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Job? _job;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Jobs'),
@@ -30,15 +32,28 @@ class JobsPage extends StatelessWidget {
   }
 
   Widget _bodyContent(BuildContext context) {
-    Stream<List<Job>> streamJobsList =
-        context.read<DatabaseService>().streamJobs();
+    final databaseService = context.read<DatabaseService>();
+    Stream<List<Job>> streamJobsList = databaseService.streamJobs();
     return StreamBuilder(
       builder: (BuildContext context, AsyncSnapshot<List<Job>> snapshot) {
         if (snapshot.hasData) {
           return ListView(
             children: snapshot.data!
-                .map((Job job) =>
-                    Text(job.name + ' : ' + job.ratePerHour.toString()))
+                .map(
+                  (Job job) => JobTileList(
+                    job: job,
+                    onTap: () {
+                      //TODO:: REFACTOR CODE : REMOVE DUPLICATION #001#
+                      Navigator.push<void>(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) => EditJobPage(
+                              databaseService: databaseService, job: job),
+                        ),
+                      );
+                    },
+                  ),
+                )
                 .toList(),
           );
         }
@@ -60,7 +75,7 @@ class JobsPage extends StatelessWidget {
       await authProvider.signOut();
     } catch (e) {
       const dialogTitle = 'Logout Error';
-      final dialogContent = 'Cause ${e.toString()} Can you please try later ?';
+      final dialogContent = 'Cause $e Can you please try later ?';
       const cancelTextButton = 'Dismiss';
 
       PlatformAlertDialog(
@@ -90,14 +105,13 @@ class JobsPage extends StatelessWidget {
   }
 
   Future<void> _createJob(BuildContext context) async {
+    //TODO:: REFACTOR CODE : REMOVE DUPLICATION #001#
     final databaseService = context.read<DatabaseService>();
     await Navigator.push(
       context,
       MaterialPageRoute(
         fullscreenDialog: true,
-        builder: (context) => CreateJobPage(
-          databaseService: databaseService,
-        ),
+        builder: (context) => EditJobPage(databaseService: databaseService),
       ),
     );
   }

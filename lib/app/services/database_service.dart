@@ -6,7 +6,7 @@ import 'package:time_tracker_flutter/app/services/api_path.dart';
 import 'package:time_tracker_flutter/app/services/firebase_service.dart';
 
 abstract class DatabaseService {
-  Future<void> createJob(Job job);
+  Future<void> setJob(Job job);
   Stream<List<Job>> streamJobs();
 }
 
@@ -15,10 +15,11 @@ class FirebaseDatabaseService implements DatabaseService {
   FirebaseDatabaseService({required this.uid});
 
   @override
-  Future<void> createJob(Job job) async {
+  Future<void> setJob(Job job) async {
     final _service = FirebaseService.instance;
     _service.setData(
-      path: APIPath.job(uid),
+      jobID: job.id,
+      path: APIPath.job(uid, job.id),
       data: job.toMap(),
     );
   }
@@ -28,6 +29,7 @@ class FirebaseDatabaseService implements DatabaseService {
     final _service = FirebaseService.instance;
 
     return _service.getStreamListCollection<Job>(
-        path: APIPath.jobs(uid), builder: (data) => Job.fromMap(data));
+        path: APIPath.jobs(uid),
+        builder: (data, documentID) => Job.fromMap(data, documentID));
   }
 }

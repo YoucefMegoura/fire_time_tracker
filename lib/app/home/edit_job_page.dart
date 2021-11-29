@@ -11,16 +11,17 @@ import '../constants.dart';
 
 //TODO:: convert to FORM and TEXTFIELDFORM !!
 
-class CreateJobPage extends StatefulWidget with JobAndRateValidator {
+class EditJobPage extends StatefulWidget with JobAndRateValidator {
   @override
-  State<CreateJobPage> createState() => _CreateJobPageState();
+  State<EditJobPage> createState() => _EditJobPageState();
 
   final DatabaseService databaseService;
+  final Job? job;
 
-  CreateJobPage({required this.databaseService});
+  EditJobPage({required this.databaseService, this.job});
 }
 
-class _CreateJobPageState extends State<CreateJobPage> {
+class _EditJobPageState extends State<EditJobPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _rateController = TextEditingController();
   final FocusNode _nameFocusNode = FocusNode();
@@ -34,11 +35,20 @@ class _CreateJobPageState extends State<CreateJobPage> {
   bool _isLoading = false;
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.job != null) {
+      _nameController.text = widget.job!.name;
+      _rateController.text = '${widget.job!.ratePerHour}';
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kBackgroundColor,
       appBar: AppBar(
-        title: const Text('Email SignIn'),
+        title: Text(widget.job == null ? 'Create job' : 'Edit job'),
       ),
       body: SingleChildScrollView(child: _bodyContent(context)),
     );
@@ -71,7 +81,7 @@ class _CreateJobPageState extends State<CreateJobPage> {
           //TODO:: create a formSignIn Button extends CustomRaisedButton
           backgroundColor: Colors.indigoAccent,
           textColor: Colors.white,
-          text: 'Create job',
+          text: widget.job == null ? 'Create job' : 'Edit job',
           onPressed: _isFormValid && !_isLoading ? _submit : null,
           isEnable: !_isLoading || _isFormValid,
         )
@@ -139,18 +149,25 @@ class _CreateJobPageState extends State<CreateJobPage> {
       _isFormSubmitted = true;
     });
     try {
-      List<Job> _jobs = await widget.databaseService.streamJobs().first;
-      List<String> _allNames = _jobs.map((Job job) => job.name).toList();
-      if (_allNames.contains(_name)) {
-        PlatformAlertDialog(
-          title: 'Error',
-          content: 'Name Already Exists',
-          cancelTextButton: 'OK',
-        ).show(context);
-        return;
+      if (widget.job == null) {
+        List<Job> _jobs = await widget.databaseService.streamJobs().first;
+        List<String> _allNames = _jobs.map((Job job) => job.name).toList();
+        if (_allNames.contains(_name)) {
+          PlatformAlertDialog(
+            title: 'Error',
+            content: 'Name Already Exists',
+            cancelTextButton: 'OK',
+          ).show(context);
+          return;
+        }
       }
-      await widget.databaseService.createJob(
-        Job(name: _name, ratePerHour: _rate),
+
+      await widget.databaseService.setJob(
+        Job(
+          id: (widget.job != null) ? widget.job!.id : null,
+          name: _name,
+          ratePerHour: _rate,
+        ),
       );
 
       Navigator.pop(context);
