@@ -9,10 +9,11 @@ import 'package:time_tracker_flutter/app/models/job.dart';
 import 'package:time_tracker_flutter/app/services/auth_service.dart';
 import 'package:time_tracker_flutter/app/services/database_service.dart';
 
+import 'empty_content.dart';
+
 class JobsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Job? _job;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Jobs'),
@@ -37,24 +38,30 @@ class JobsPage extends StatelessWidget {
     return StreamBuilder(
       builder: (BuildContext context, AsyncSnapshot<List<Job>> snapshot) {
         if (snapshot.hasData) {
-          return ListView(
-            children: snapshot.data!
-                .map(
-                  (Job job) => JobTileList(
-                    job: job,
-                    onTap: () {
-                      //TODO:: REFACTOR CODE : REMOVE DUPLICATION #001#
-                      Navigator.push<void>(
-                        context,
-                        MaterialPageRoute<void>(
-                          builder: (BuildContext context) => EditJobPage(
-                              databaseService: databaseService, job: job),
-                        ),
-                      );
-                    },
-                  ),
-                )
-                .toList(),
+          if (snapshot.data!.isNotEmpty) {
+            return ListView(
+              children: snapshot.data!
+                  .map(
+                    (Job job) => JobTileList(
+                      job: job,
+                      onTap: () {
+                        //TODO:: REFACTOR CODE : REMOVE DUPLICATION #001#
+                        Navigator.push<void>(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) => EditJobPage(
+                                databaseService: databaseService, job: job),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                  .toList(),
+            );
+          }
+          return EmptyContent(
+            title: 'Nothing to show',
+            message: 'There is no content, add jobs to get Started!',
           );
         }
         if (snapshot.hasError) {

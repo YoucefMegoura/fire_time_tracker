@@ -149,17 +149,20 @@ class _EditJobPageState extends State<EditJobPage> {
       _isFormSubmitted = true;
     });
     try {
-      if (widget.job == null) {
-        List<Job> _jobs = await widget.databaseService.streamJobs().first;
-        List<String> _allNames = _jobs.map((Job job) => job.name).toList();
-        if (_allNames.contains(_name)) {
-          PlatformAlertDialog(
-            title: 'Error',
-            content: 'Name Already Exists',
-            cancelTextButton: 'OK',
-          ).show(context);
-          return;
-        }
+      List<Job> _jobs = await widget.databaseService.streamJobs().first;
+      List<String> _allNames = _jobs.map((Job job) => job.name).toList();
+      if (widget.job != null) {
+        //Exclude the current name from _allNames
+        _allNames.remove(widget.job!.name);
+      }
+
+      if (_allNames.contains(_name)) {
+        PlatformAlertDialog(
+          title: 'Error',
+          content: 'Name Already Exists',
+          cancelTextButton: 'OK',
+        ).show(context);
+        return;
       }
 
       await widget.databaseService.setJob(
