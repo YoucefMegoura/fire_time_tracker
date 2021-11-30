@@ -39,24 +39,25 @@ class JobsPage extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<List<Job>> snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data!.isNotEmpty) {
-            return ListView(
-              children: snapshot.data!
-                  .map(
-                    (Job job) => JobTileList(
-                      job: job,
-                      onTap: () {
-                        //TODO:: REFACTOR CODE : REMOVE DUPLICATION #001#
-                        Navigator.push<void>(
-                          context,
-                          MaterialPageRoute<void>(
-                            builder: (BuildContext context) => EditJobPage(
-                                databaseService: databaseService, job: job),
-                          ),
-                        );
-                      },
-                    ),
-                  )
-                  .toList(),
+            return ListView.separated(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                Job job = snapshot.data![index];
+                return JobTileList(
+                  job: job,
+                  onTap: () {
+                    //TODO:: REFACTOR CODE : REMOVE DUPLICATION #001#
+                    Navigator.push<void>(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => EditJobPage(
+                            databaseService: databaseService, job: job),
+                      ),
+                    );
+                  },
+                );
+              },
+              separatorBuilder: (context, index) => const Divider(),
             );
           }
           return EmptyContent(
